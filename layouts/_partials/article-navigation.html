@@ -1,0 +1,46 @@
+{{ $page := . }}
+{{ $posts := partialCached "posts.html" site }}
+{{ $options := slice }}
+{{ range partialCached "tags.html" site }}
+  {{ $options = $options | append (dict "label" . "tag" . "count" (len (where $posts "Params.tags" "intersect" (slice .)))) }}
+{{ end }}
+<aside id="articles-panel" class="articles-panel drawer" aria-label="文章导航">
+  <div class="navigation-tools">
+    <div class="tag-browser">
+      <div class="tag-toolbar">
+        <button class="tag-toggle rail-heading" type="button" aria-label="按标签浏览" aria-expanded="false" aria-controls="tag-index"{{ if not $options }} disabled{{ end }}>
+          <span class="tag-label">按标签浏览</span>
+          <svg aria-hidden="true" viewBox="0 0 16 16"><path d="m5 6 3 3 3-3"/></svg>
+        </button>
+        <button class="tag-reset" type="button" aria-label="清除标签筛选" title="清除标签筛选" hidden>
+          <svg aria-hidden="true" viewBox="0 0 16 16"><path d="m4 4 8 8m0-8-8 8"/></svg>
+        </button>
+      </div>
+      <div id="tag-index" class="tag-index" hidden>
+        <ul class="tag-list" aria-label="按标签浏览文章">
+          {{ range $options }}
+          <li><button type="button" data-tag="{{ .tag }}" aria-label="{{ .label }}，{{ .count }} 篇文章" aria-pressed="false">
+            <svg class="tag-check" aria-hidden="true" viewBox="0 0 16 16"><path d="m3 8 3 3 7-7"/></svg>
+            <span class="tag-name">{{ .label }}</span><span class="tag-count" aria-hidden="true">{{ .count }}</span>
+          </button></li>
+          {{ end }}
+        </ul>
+      </div>
+    </div>
+    <p id="filter-status" class="visually-hidden" role="status" aria-live="polite"></p>
+  </div>
+  <div class="navigation-scroll" id="navigation-scroll">
+    <div id="article-tree">
+      {{ range $yi, $year := $posts.GroupByDate "2006" }}
+      <details class="year-group" data-group="{{ .Key }}"{{ if and (not $page.IsHome) (or (eq $yi 0) (and $page.IsPage (eq (.Key) ($page.Date.Format "2006")))) }} open{{ end }}>
+        <summary><span class="chevron" aria-hidden="true"></span><span>{{ .Key }}</span><span class="group-count">{{ len .Pages }}</span></summary>
+        <ul class="article-list">
+        {{ range .Pages }}
+          <li data-tags="{{ .Params.tags | jsonify }}"><a href="{{ .RelPermalink }}"{{ if eq $page.RelPermalink .RelPermalink }} aria-current="page"{{ end }}>{{ .Title }}</a></li>
+        {{ end }}
+        </ul>
+      </details>
+      {{ else }}<p class="empty-message">暂无已发布文章</p>{{ end }}
+    </div>
+  </div>
+</aside>

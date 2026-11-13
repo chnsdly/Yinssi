@@ -1,0 +1,7 @@
+{{ $hasTOC := and .IsPage (strings.Contains .TableOfContents "<a ") }}
+<aside id="toc-panel" class="toc-panel drawer{{ if not $hasTOC }} is-empty{{ end }}" data-has-toc="{{ $hasTOC }}" aria-label="本文目录">
+  {{ if $hasTOC }}
+  <h2 class="rail-heading">本文目录</h2>
+  <div class="toc-scroll">{{ .TableOfContents }}</div>
+  {{ end }}
+</aside>

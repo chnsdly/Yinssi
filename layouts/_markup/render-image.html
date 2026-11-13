@@ -1,0 +1,9 @@
+{{ $source := urls.Parse .Destination }}
+{{ $image := false }}
+{{ if and (not $source.IsAbs) (not $source.Host) }}{{ $image = .Page.Resources.Get $source.Path }}{{ end }}
+{{ if and $image (reflect.IsImageResource $image) }}
+{{ $src := $image.RelPermalink }}
+{{ with $source.RawQuery }}{{ $src = printf "%s?%s" $src . }}{{ end }}
+{{ with $source.EscapedFragment }}{{ $src = printf "%s#%s" $src . }}{{ end }}
+<img src="{{ $src }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if reflect.IsImageResourceWithMeta $image }} width="{{ $image.Width }}" height="{{ $image.Height }}"{{ end }} loading="lazy" decoding="async">
+{{ else }}{{ errorf "%s：正文图片不存在或不属于本文：%s" .Page.File.Path .Destination }}{{ end }}

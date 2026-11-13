@@ -1,0 +1,13 @@
+{{ define "main" }}
+{{ range .Fragments.HeadingsMap }}
+  {{ if eq .Level 1 }}{{ errorf "%s：正文请从二级标题 ## 开始，不要重复一级标题" $.File.Path }}{{ end }}
+{{ end }}
+<article class="article" data-pagefind-body>
+  <header class="article-header">
+    <h1 data-pagefind-meta="title">{{ .Title }}</h1>
+    {{ if .Draft }}<span class="draft-label" data-pagefind-ignore>草稿</span>{{ end }}
+  </header>
+  <div class="prose">{{ .Content }}</div>
+</article>
+{{ partial "related-posts.html" . }}
+{{ end }}

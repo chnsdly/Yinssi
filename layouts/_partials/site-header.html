@@ -1,0 +1,15 @@
+<header class="site-header">
+  <div class="header-inner">
+    <a class="wordmark" href="{{ site.Home.RelPermalink }}" aria-label="{{ site.Title }}，回到首页">{{ site.Title }}</a>
+    <div class="header-actions">
+      <nav class="compact-controls" aria-label="阅读导航">
+        <button type="button" data-open-drawer="articles" aria-controls="articles-panel" aria-expanded="false">文章</button>
+        {{ if and .IsPage (strings.Contains .TableOfContents "<a ") }}<button type="button" data-open-drawer="toc" aria-controls="toc-panel" aria-expanded="false">目录</button>{{ end }}
+      </nav>
+      <button class="header-search" type="button" data-open-search aria-label="搜索文章" aria-haspopup="dialog" aria-controls="site-search">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+        <span>搜索</span>
+      </button>
+    </div>
+  </div>
+</header>

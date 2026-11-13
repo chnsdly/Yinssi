@@ -1,0 +1,48 @@
+baseURL = 'http://127.0.0.1:1313/'
+title = '隐肆'
+locale = 'zh-CN'
+defaultContentLanguage = 'zh'
+timeZone = 'Asia/Shanghai'
+hasCJKLanguage = true
+enableRobotsTXT = true
+disableKinds = ['taxonomy', 'term', 'section', 'RSS']
+buildDrafts = false
+buildFuture = false
+buildExpired = false
+resourceDir = '.cache/resources'
+
+[build]
+  noJSConfigInAssets = true
+
+[params]
+  homeSentence = '地图不是疆域'
+  description = '隐肆，存放思考的地方。'
+  canonical = false
+
+[outputs]
+  home = ['HTML']
+  page = ['HTML']
+
+[permalinks.page]
+  posts = '/posts/:contentbasename/'
+
+[markup]
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+    ordered = false
+  [markup.goldmark.renderer]
+    unsafe = false
+  [markup.goldmark.parser]
+    autoHeadingID = true
+    autoHeadingIDType = 'github'
+  [markup.highlight]
+    noClasses = false
+
+[[cascade]]
+  [cascade.build]
+    publishResources = false
+
+[minify]
+  [minify.tdewolff.html]
+    keepWhitespace = true

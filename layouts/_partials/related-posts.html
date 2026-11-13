@@ -1,0 +1,14 @@
+{{ $page := . }}
+{{ $related := slice }}
+{{ range partialCached "posts.html" site }}
+  {{ if ne .RelPermalink $page.RelPermalink }}
+    {{ $shared := intersect (.Params.tags | default slice) ($page.Params.tags | default slice) }}
+    {{ if gt (len $shared) 0 }}{{ $related = $related | append (dict "page" . "score" (len $shared)) }}{{ end }}
+  {{ end }}
+{{ end }}
+{{ with first 3 (sort $related "score" "desc") }}
+<nav class="related-posts" aria-label="相关文章">
+  <h2 class="rail-heading">沿着这个思路</h2>
+  <ul>{{ range . }}<li><a href="{{ .page.RelPermalink }}">{{ .page.Title }}<span aria-hidden="true">↗</span></a></li>{{ end }}</ul>
+</nav>
+{{ end }}

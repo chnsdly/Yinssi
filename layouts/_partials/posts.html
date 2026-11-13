@@ -1,0 +1,3 @@
+{{ $posts := where .RegularPages "Section" "posts" }}
+{{ $posts = sort $posts "File.ContentBaseName" "asc" }}
+{{ return (sort $posts "Date" "desc") }}

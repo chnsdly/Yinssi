@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+  <meta name="description" content="{{ if .IsPage }}{{ .Plain | truncate 140 }}{{ else }}{{ site.Params.description }}{{ end }}">
+  {{ if site.Params.canonical }}<link rel="canonical" href="{{ .Permalink }}">{{ end }}
+  {{ if ne hugo.Environment "production" }}<meta name="robots" content="noindex, nofollow">{{ end }}
+  {{ $css := resources.Get "css/site.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+  {{ $js := resources.Get "js/site.js" | js.Build (dict "target" "es2022" "minify" true) | fingerprint }}
+  <script type="module" src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  {{ partial "site-header.html" . }}
+  <div class="site-layout{{ if .IsHome }} home-layout{{ end }}">
+    {{ partial "article-navigation.html" . }}
+    <main id="main" class="reading-column{{ if .IsHome }} home-reading{{ end }}" tabindex="-1">{{ block "main" . }}{{ end }}</main>
+    {{ partial "article-toc.html" . }}
+  </div>
+  <div class="drawer-backdrop" hidden aria-hidden="true"></div>
+  {{ partial "search-dialog.html" . }}
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "yinsi",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24.22.1 <25" },
+  "scripts": {
+    "check": "node scripts/verify-content.mjs",
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "pagefind": "1.6.0",
+    "yaml": "2.9.1"
+  }
+}
